@@ -19,19 +19,32 @@ This system streamlines the tracking and management of tools in an inventory env
    ```
    cd BrotherQrPrinter
    ```
-3. Install the required dependencies:
+3. Create a virtual enviroment:
+   ```
+   python -m venv venv
+   ```
+4. Activate the virtual environment using the appropriate command for your operating system:
+   
+   **Linux and macOS:**
+   ```
+   source venv/bin/activate
+   ```
+   **Windows:**
+   ```
+   .\venv\Scripts\activate
+   ```
+5. Install the required dependencies:
    ```
    pip install -r requirements.txt
    ```
 ## Troubleshooting
-**Before running** the application, execute the `patch_conversion.py` script to ensure compatibility with the latest version of Pillow. This script will update a line in the `conversion.py` file within the `brother_ql` package to use modern image resizing methods.
+**Before running** the application, navigate to the following file: `venv/Lib/site-packages/brother_ql/conversion.py`. Please note that the exact path may vary depending on your operating system.
 
-To run the script, use:
+In this file, locate line 115 and modify it as follows:
+```python
+im = im.resize((dots_printable[0], hsize), Image.Resampling.LANCZOS)
 ```
-python patch_conversion.py
-```
-If your virtual enviroment has a different name than `venv` update it inside the `patch_conversion.py` script.
-This will automatically apply the necessary change and create a backup of the original file as `conversion.py.bak`.
+This change is necessary to fix an error with the brother_ql library, which is caused by it using an older version of the Pillow library than required.
 
 ## Usage
 To start the application, run:
